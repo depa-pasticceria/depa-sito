@@ -11,6 +11,26 @@ export default function Prenota({ blok }) {
 	const settings = useSettings();
 	const [motivo, setMotivo] = useState('prenotazione');
 
+	const inviaSuWhatsApp = (event) => {
+		event.preventDefault();
+		const data = new FormData(event.currentTarget);
+		const apertura =
+			motivo === 'prenotazione'
+				? 'Ciao! Vorrei prenotare dei dolci.'
+				: 'Ciao! Vorrei informazioni per un evento.';
+		const testo = [
+			apertura,
+			`Mi chiamo ${data.get('nome')}.`,
+			data.get('messaggio'),
+		].join('\n');
+		const numero = String(settings.whatsapp || '').replace(/\D/g, '');
+		window.open(
+			`https://wa.me/${numero}?text=${encodeURIComponent(testo)}`,
+			'_blank',
+			'noopener',
+		);
+	};
+
 	return (
 		<section
 			{...storyblokEditable(blok)}
@@ -70,7 +90,10 @@ export default function Prenota({ blok }) {
 				</div>
 
 				<FadeIn delay={0.15}>
-					<form className="flex flex-col gap-5 bg-depa-black text-depa-panna p-8 md:p-10 rounded-sm">
+					<form
+						onSubmit={inviaSuWhatsApp}
+						className="flex flex-col gap-5 bg-depa-black text-depa-panna p-8 md:p-10 rounded-sm"
+					>
 						<div className="flex gap-2 mb-2">
 							{['prenotazione', 'evento'].map((tipo) => (
 								<button
@@ -108,16 +131,6 @@ export default function Prenota({ blok }) {
 						</label>
 
 						<label className="flex flex-col gap-1.5 text-xs uppercase tracking-wide text-depa-panna/50">
-							Telefono o email
-							<input
-								type="text"
-								name="contatto"
-								required
-								className="rounded-none border-b border-depa-panna/20 bg-transparent py-2 text-base text-depa-panna outline-none focus:border-depa-senape"
-							/>
-						</label>
-
-						<label className="flex flex-col gap-1.5 text-xs uppercase tracking-wide text-depa-panna/50">
 							{motivo === 'prenotazione'
 								? 'Cosa vuoi prenotare'
 								: 'Raccontaci il tuo evento'}
@@ -135,6 +148,10 @@ export default function Prenota({ blok }) {
 						>
 							{blok.bottone || 'Invia richiesta'}
 						</button>
+
+						<p className="text-xs text-depa-panna/40">
+							Si apre WhatsApp con il messaggio già pronto: ti basta premere Invia.
+						</p>
 					</form>
 				</FadeIn>
 			</div>

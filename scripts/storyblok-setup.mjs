@@ -137,6 +137,7 @@ const components = [
 			citta: text('Citta'),
 			provincia: text('Provincia (sigla)'),
 			zone_servite: textarea('Zone servite (una per riga)'),
+			whatsapp: text('Numero WhatsApp (con prefisso, es. +39 333 1234567)'),
 			instagram: text('Link Instagram'),
 			facebook: text('Link Facebook'),
 			menu: bloks('Voci del menu', ['voce_menu']),
@@ -231,6 +232,7 @@ async function main() {
 			provincia: 'SA',
 			zone_servite:
 				'Roccapiemonte\nNocera Superiore\nNocera Inferiore\nCastel San Giorgio\nMercato San Severino',
+			whatsapp: '+39 346 515 7975',
 			instagram: 'https://instagram.com/depapastryshop',
 			facebook: 'https://facebook.com/depapastryshop',
 			menu: [

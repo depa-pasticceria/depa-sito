@@ -11,6 +11,7 @@ export const defaultSettings = {
 	provincia: 'SA',
 	zone_servite:
 		'Roccapiemonte\nNocera Superiore\nNocera Inferiore\nCastel San Giorgio\nMercato San Severino',
+	whatsapp: '+39 346 515 7975',
 	instagram: 'https://instagram.com/depapastryshop',
 	facebook: 'https://facebook.com/depapastryshop',
 	menu: [
