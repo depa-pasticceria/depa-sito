@@ -20,8 +20,8 @@ export default function Prenota({ blok }) {
 				: 'Ciao! Vorrei informazioni per un evento.';
 		const testo = [
 			apertura,
-			`Mi chiamo ${data.get('nome')}.`,
-			data.get('messaggio'),
+			`Nome: ${data.get('nome')}`,
+			`Oggetto: ${data.get('messaggio')}`,
 		].join('\n');
 		const numero = String(settings.whatsapp || '').replace(/\D/g, '');
 		window.open(
@@ -148,10 +148,6 @@ export default function Prenota({ blok }) {
 						>
 							{blok.bottone || 'Invia richiesta'}
 						</button>
-
-						<p className="text-xs text-depa-panna/40">
-							Si apre WhatsApp con il messaggio già pronto: ti basta premere Invia.
-						</p>
 					</form>
 				</FadeIn>
 			</div>
