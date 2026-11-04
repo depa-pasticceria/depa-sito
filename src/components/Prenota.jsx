@@ -5,6 +5,7 @@ import { storyblokEditable } from '@storyblok/react/rsc';
 import { Reveal, FadeIn } from './Reveal';
 import { useSettings } from '@/components/SettingsProvider';
 import { lines } from '@/lib/utils';
+import { contattoWhatsApp } from '@/lib/analytics';
 
 export default function Prenota({ blok }) {
 	const settings = useSettings();
@@ -23,6 +24,7 @@ export default function Prenota({ blok }) {
 			`Oggetto: ${data.get('messaggio')}`,
 		].join('\n');
 		const numero = String(settings.whatsapp || '').replace(/\D/g, '');
+		contattoWhatsApp(motivo === 'prenotazione' ? 'modulo-prenotazione' : 'modulo-evento');
 		window.open(
 			`https://wa.me/${numero}?text=${encodeURIComponent(testo)}`,
 			'_blank',

@@ -5,6 +5,7 @@ import ScrollProgress from '@/components/ScrollProgress';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import MotionProvider from '@/components/MotionProvider';
+import Analytics from '@/components/Analytics';
 import { museo } from '@/lib/fonts';
 import { getSettings } from '@/lib/settings';
 import { lines } from '@/lib/utils';
@@ -80,6 +81,7 @@ export default async function RootLayout({ children }) {
 							{children}
 							<Footer />
 						</MotionProvider>
+						<Analytics />
 					</SettingsProvider>
 				</body>
 			</html>

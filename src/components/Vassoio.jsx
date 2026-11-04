@@ -6,6 +6,7 @@ import { cubicBezier, m, useReducedMotion, useScroll, useTransform } from 'frame
 import { storyblokEditable } from '@storyblok/react/rsc';
 import { useSettings } from '@/components/SettingsProvider';
 import { lines } from '@/lib/utils';
+import { contattoWhatsApp } from '@/lib/analytics';
 
 // Le paste partono sparse attorno al titolo e, scorrendo, si posano una alla volta sul vassoio.
 // Tutto il movimento passa da una sola variabile CSS per pasta (--t da 0 a 1): solo transform e
@@ -223,6 +224,7 @@ export default function Vassoio({ blok }) {
 						{blok.bottone && numero && (
 							<a
 								href={link}
+								onClick={() => contattoWhatsApp('vassoio')}
 								target="_blank"
 								rel="noreferrer"
 								className="mt-6 inline-block rounded-full bg-depa-senape px-7 py-3.5 text-sm tracking-[0.1em] uppercase text-depa-black hover:bg-depa-oro transition-colors"

@@ -4,6 +4,7 @@ import { m } from 'framer-motion';
 import { storyblokEditable } from '@storyblok/react/rsc';
 import { Reveal, FadeIn } from './Reveal';
 import { useSettings } from '@/components/SettingsProvider';
+import { contattoWhatsApp } from '@/lib/analytics';
 
 // Fascia "novità" nei colori del sito. Il richiamo alla box del panettone è solo il piccolo
 // tassello con il suo rosso e il suo pattern: niente sezioni a tutto colore.
@@ -63,6 +64,7 @@ export default function Novita({ blok }) {
 					<FadeIn delay={0.15} className="shrink-0">
 						<a
 							href={link}
+							onClick={() => contattoWhatsApp('novita-panettone')}
 							target="_blank"
 							rel="noreferrer"
 							className="inline-block rounded-full border border-depa-senape px-6 py-3 text-sm tracking-[0.1em] uppercase text-depa-senape hover:bg-depa-senape hover:text-depa-black transition-colors"
