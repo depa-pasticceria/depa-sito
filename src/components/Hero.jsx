@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { storyblokEditable } from '@storyblok/react/rsc';
 import { imageSrc, lines } from '@/lib/utils';
 
@@ -26,19 +26,25 @@ export default function Hero({ blok }) {
 			<div className="relative z-10 grid min-h-[100svh] grid-cols-1 lg:grid-cols-[1.05fr_0.95fr]">
 				<div className="order-2 lg:order-1 flex flex-col justify-center px-6 md:px-10 py-16 lg:py-24">
 					<div className="mx-auto w-full max-w-2xl lg:mx-0 lg:ml-auto lg:pr-12 xl:pr-16">
-						<motion.p
+						<m.p
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							transition={{ delay: 1.1, duration: 0.8 }}
-							className="mb-6 text-xs md:text-sm tracking-[0.35em] uppercase text-depa-senape"
+							className="mb-6 text-xs md:text-sm tracking-[0.3em] md:tracking-[0.35em] uppercase text-depa-senape"
 						>
-							{blok.sopratitolo}
-						</motion.p>
+							{/* Su smartphone ogni parte va su una riga, senza il puntino separatore */}
+							{(blok.sopratitolo || '').split(' · ').map((parte, i) => (
+								<span key={parte} className="block sm:inline">
+									{i > 0 && <span className="hidden sm:inline"> &middot; </span>}
+									{parte}
+								</span>
+							))}
+						</m.p>
 
 						<h1 className="font-light text-[15vw] leading-[0.95] sm:text-[9vw] lg:text-[4.6vw]">
 							{headline.map((line, i) => (
 								<span key={line} className="block overflow-hidden">
-									<motion.span
+									<m.span
 										initial={{ y: '100%' }}
 										animate={{ y: '0%' }}
 										transition={{
@@ -49,21 +55,21 @@ export default function Hero({ blok }) {
 										className={`block ${i === headline.length - 1 ? 'text-depa-senape' : 'text-depa-panna'}`}
 									>
 										{line}
-									</motion.span>
+									</m.span>
 								</span>
 							))}
 						</h1>
 
-						<motion.p
+						<m.p
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.85, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
 							className="mt-8 max-w-md text-lg text-depa-panna/70 font-light leading-relaxed text-balance"
 						>
 							{blok.sottotitolo}
-						</motion.p>
+						</m.p>
 
-						<motion.div
+						<m.div
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -85,24 +91,27 @@ export default function Hero({ blok }) {
 									{blok.bottone_secondario}
 								</a>
 							)}
-						</motion.div>
+						</m.div>
 					</div>
 				</div>
 
-				<motion.div
-					initial={{ opacity: 0, scale: 1.04 }}
-					animate={{ opacity: 1, scale: 1 }}
+				{/* Solo zoom, niente dissolvenza: la foto è l'elemento LCP e deve comparire subito */}
+				<m.div
+					initial={{ scale: 1.04 }}
+					animate={{ scale: 1 }}
 					transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
-					className="order-1 lg:order-2 relative min-h-[52vh] lg:min-h-full"
+					className="order-1 lg:order-2 relative min-h-[52vh] lg:min-h-full overflow-hidden"
 				>
 					<Image
+						quality={80}
 						src={imageSrc(blok.immagine, '/images/hero/pasticciere.jpg')}
 						alt={
 							blok.immagine?.alt ||
-							'Il pasticciere Depa mentre decora una torta a mano, Roccapiemonte'
+							'Il pasticciere di Depa Pastryshop compone una torta nel laboratorio di Roccapiemonte'
 						}
 						fill
-						priority
+						preload
+						fetchPriority="high"
 						sizes="(min-width: 1024px) 45vw, 100vw"
 						className="object-cover object-[center_25%] grayscale-[35%] contrast-[1.05] brightness-[0.85]"
 					/>
@@ -122,26 +131,23 @@ export default function Hero({ blok }) {
 						aria-hidden
 						className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-depa-black to-transparent lg:hidden"
 					/>
-				</motion.div>
+				</m.div>
 			</div>
 
-			<motion.div
+			<m.div
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
 				transition={{ delay: 1.5, duration: 1 }}
-				className="absolute bottom-8 left-6 md:left-10 z-10 flex flex-col items-center gap-3"
+				className="absolute bottom-8 left-6 md:left-10 z-10 hidden lg:flex flex-col items-center gap-3"
 			>
 				<span className="text-[10px] tracking-[0.3em] uppercase text-depa-panna/40">
 					Scorri
 				</span>
 				<div className="h-12 w-px overflow-hidden bg-depa-panna/15">
-					<motion.div
-						className="h-4 w-px bg-depa-senape"
-						animate={{ y: ['-16px', '48px'] }}
-						transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-					/>
+					{/* Animazione infinita in CSS: la esegue la scheda video, non il JavaScript a ogni fotogramma */}
+					<div className="scorri-linea h-4 w-px bg-depa-senape" />
 				</div>
-			</motion.div>
+			</m.div>
 		</section>
 	);
 }

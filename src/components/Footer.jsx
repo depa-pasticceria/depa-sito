@@ -44,14 +44,14 @@ export default function Footer() {
 						))}
 					</nav>
 
-					<p className="text-xs text-depa-panna/30">
+					<p className="text-xs text-depa-panna/55">
 						&copy; {new Date().getFullYear()} {settings.nome} &middot;{' '}
 						{settings.citta} ({settings.provincia})
 					</p>
 				</div>
 
-				<p className="mt-8 pt-6 border-t border-depa-panna/5 text-[11px] text-depa-panna/25">
-					Zone servite: {lines(settings.zone_servite).join(' · ')}.
+				<p className="mt-8 pt-6 border-t border-depa-panna/5 text-[11px] text-depa-panna/60">
+					Passa a trovarci anche da: {lines(settings.zone_servite).join(' · ')}.
 				</p>
 			</div>
 		</footer>

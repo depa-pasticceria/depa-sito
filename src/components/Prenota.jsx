@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { storyblokEditable } from '@storyblok/react/rsc';
 import { Reveal, FadeIn } from './Reveal';
 import { useSettings } from '@/components/SettingsProvider';
@@ -61,6 +60,40 @@ export default function Prenota({ blok }) {
 								{settings.via}, {settings.citta} ({settings.provincia})
 							</p>
 						</div>
+						{settings.orari && (
+							<div>
+								<p className="uppercase text-depa-black/40 mb-1">Orari</p>
+								{lines(settings.orari).map((riga) => (
+									<p key={riga} className="font-light">
+										{riga}
+									</p>
+								))}
+							</div>
+						)}
+						{settings.telefono && (
+							<div>
+								<p className="uppercase text-depa-black/40 mb-1">Telefono</p>
+								<a
+									href={`tel:+39${String(settings.telefono).replace(/\D/g, '')}`}
+									className="font-light underline underline-offset-4 decoration-depa-senape hover:text-depa-senape"
+								>
+									{settings.telefono}
+								</a>
+							</div>
+						)}
+						{settings.whatsapp && (
+							<div>
+								<p className="uppercase text-depa-black/40 mb-1">WhatsApp</p>
+								<a
+									href={`https://wa.me/${String(settings.whatsapp).replace(/\D/g, '')}`}
+									target="_blank"
+									rel="noreferrer"
+									className="font-light underline underline-offset-4 decoration-depa-senape hover:text-depa-senape"
+								>
+									{settings.whatsapp}
+								</a>
+							</div>
+						)}
 						<div>
 							<p className="uppercase text-depa-black/40 mb-1">Seguici</p>
 							<div className="flex gap-4">
@@ -92,27 +125,29 @@ export default function Prenota({ blok }) {
 				<FadeIn delay={0.15}>
 					<form
 						onSubmit={inviaSuWhatsApp}
-						className="flex flex-col gap-5 bg-depa-black text-depa-panna p-8 md:p-10 rounded-sm"
+						className="flex flex-col gap-5 bg-depa-black text-depa-panna p-5 min-[360px]:p-8 md:p-10 rounded-sm"
 					>
-						<div className="flex gap-2 mb-2">
+						<div className="relative flex gap-2 mb-2">
+							{/* Pillola che scorre sotto il pulsante attivo: solo transform, nessuna misura del layout */}
+							<span
+								aria-hidden
+								data-pill
+								className={`absolute inset-y-0 left-0 w-[calc(50%-4px)] rounded-full bg-depa-senape transition-transform duration-300 ease-out ${
+									motivo === 'evento' ? 'translate-x-[calc(100%+8px)]' : 'translate-x-0'
+								}`}
+							/>
 							{['prenotazione', 'evento'].map((tipo) => (
 								<button
 									type="button"
 									key={tipo}
 									onClick={() => setMotivo(tipo)}
-									className={`relative flex-1 rounded-full py-2.5 text-xs tracking-[0.15em] uppercase transition-colors ${
+									aria-pressed={motivo === tipo}
+									className={`relative flex-1 rounded-full px-2 py-2.5 text-[11px] sm:text-xs tracking-[0.08em] sm:tracking-[0.15em] uppercase leading-tight min-[360px]:whitespace-nowrap transition-colors ${
 										motivo === tipo
 											? 'text-depa-black'
 											: 'text-depa-panna/60 hover:text-depa-panna'
 									}`}
 								>
-									{motivo === tipo && (
-										<motion.span
-											layoutId="motivo-pill"
-											className="absolute inset-0 rounded-full bg-depa-senape"
-											transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-										/>
-									)}
 									<span className="relative">
 										{tipo === 'prenotazione' ? 'Prenotazione' : 'Evento privato'}
 									</span>

@@ -1,7 +1,8 @@
 import { getStoryblokApi } from '@/lib/storyblok';
 
+// STORYBLOK_VERSION=draft permette di provare in locale una build di produzione con le bozze.
 export const storyVersion =
-	process.env.NODE_ENV === 'development' ? 'draft' : 'published';
+	process.env.STORYBLOK_VERSION || (process.env.NODE_ENV === 'development' ? 'draft' : 'published');
 
 // Used until the "impostazioni" story exists in Storyblok, so the site always renders.
 export const defaultSettings = {
@@ -12,6 +13,8 @@ export const defaultSettings = {
 	zone_servite:
 		'Roccapiemonte\nNocera Superiore\nNocera Inferiore\nCastel San Giorgio\nMercato San Severino',
 	whatsapp: '+39 346 515 7975',
+	telefono: '081 2596684',
+	orari: 'Martedì-sabato 8-20\nDomenica 8-14\nLunedì chiuso',
 	instagram: 'https://instagram.com/depapastryshop',
 	facebook: 'https://facebook.com/depapastryshop',
 	menu: [

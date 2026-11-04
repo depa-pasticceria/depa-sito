@@ -1,22 +1,20 @@
+import { notFound } from 'next/navigation';
 import { StoryblokStory } from '@storyblok/react/rsc';
-import { getStoryblokApi } from '@/lib/storyblok';
+import { getPage } from '@/lib/stories';
 import { storyVersion } from '@/lib/settings';
 
+// Pagine pubbliche statiche, rigenerate al massimo ogni 60 secondi dopo una pubblicazione in Storyblok.
+// Le bozze per il Visual Editor passano da /preview (vedi app/preview).
 export const revalidate = 60;
 
-export default async function Page({ params, searchParams }) {
+export function generateStaticParams() {
+	return [{ slug: [] }];
+}
+
+export default async function Page({ params }) {
 	const { slug } = await params;
-	const query = await searchParams;
+	const story = await getPage(slug ? slug.join('/') : 'home', storyVersion);
+	if (!story) notFound();
 
-	let fullSlug = slug ? slug.join('/') : 'home';
-
-	// Il Visual Editor di Storyblok apre il sito con il parametro _storyblok: in quel caso mostriamo le bozze.
-	let sbParams = {
-		version: query?._storyblok ? 'draft' : storyVersion,
-	};
-
-	const storyblokApi = getStoryblokApi();
-	let { data } = await storyblokApi.get(`cdn/stories/${fullSlug}`, sbParams);
-
-	return <StoryblokStory story={data.story} />;
+	return <StoryblokStory story={story} />;
 }

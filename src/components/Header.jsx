@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useSettings } from '@/components/SettingsProvider';
 import { imageSrc } from '@/lib/utils';
 
@@ -22,7 +21,7 @@ export default function Header() {
 		<header
 			className={`fixed top-0 inset-x-0 z-40 transition-colors duration-500 ${
 				scrolled
-					? 'bg-depa-black/85 backdrop-blur-md border-b border-depa-panna/10'
+					? 'bg-depa-black border-b border-depa-panna/10'
 					: 'bg-transparent'
 			}`}
 		>
@@ -37,7 +36,7 @@ export default function Header() {
 						fill
 						sizes="112px"
 						className="object-contain object-left"
-						priority
+						loading="eager"
 					/>
 				</a>
 
@@ -62,6 +61,8 @@ export default function Header() {
 
 				<button
 					aria-label="Menu"
+					aria-expanded={open}
+					aria-controls="menu-mobile"
 					onClick={() => setOpen((v) => !v)}
 					className="md:hidden flex flex-col gap-1.5 w-8"
 				>
@@ -77,15 +78,15 @@ export default function Header() {
 				</button>
 			</div>
 
-			<AnimatePresence>
-				{open && (
-					<motion.nav
-						initial={{ height: 0, opacity: 0 }}
-						animate={{ height: 'auto', opacity: 1 }}
-						exit={{ height: 0, opacity: 0 }}
-						transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-						className="md:hidden overflow-hidden bg-depa-black border-b border-depa-panna/10"
-					>
+			{/* Menu mobile: solo opacità e spostamento (niente animazione dell'altezza), così l'apertura è immediata */}
+			<nav
+				id="menu-mobile"
+				data-mobile-nav
+				inert={!open}
+				className={`md:hidden absolute inset-x-0 top-full bg-depa-black border-b border-depa-panna/10 transition-[opacity,transform] duration-300 ease-out ${
+					open ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
+				}`}
+			>
 						<div className="flex flex-col px-6 py-6 gap-5">
 							{[
 								...settings.menu,
@@ -105,9 +106,7 @@ export default function Header() {
 								</a>
 							))}
 						</div>
-					</motion.nav>
-				)}
-			</AnimatePresence>
+			</nav>
 		</header>
 	);
 }

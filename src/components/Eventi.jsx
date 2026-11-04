@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { storyblokEditable } from '@storyblok/react/rsc';
 import { Reveal, FadeIn } from './Reveal';
 import { imageSrc, lines } from '@/lib/utils';
@@ -63,15 +63,17 @@ export default function Eventi({ blok }) {
 						)}
 					</div>
 
-					<div className="relative h-[520px] md:h-[640px]">
-						<motion.div
+					{/* Su smartphone due foto affiancate, da tablet in su la composizione sovrapposta */}
+					<div className="grid grid-cols-2 gap-3 md:block md:relative md:h-[640px]">
+						<m.div
 							initial={{ opacity: 0, y: 40 }}
 							whileInView={{ opacity: 1, y: 0 }}
 							viewport={{ once: true, amount: 0.2 }}
 							transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-							className="absolute right-0 top-0 w-[72%] h-[62%] rounded-sm overflow-hidden shadow-2xl shadow-black/60"
+							className="relative aspect-[4/5] md:aspect-auto md:absolute md:right-0 md:top-0 md:w-[72%] md:h-[62%] rounded-sm overflow-hidden shadow-2xl shadow-black/60"
 						>
 							<Image
+								quality={90}
 								src={imageSrc(blok.immagine_1, '/images/eventi/torta-cerimonia-1.jpeg')}
 								alt={
 									blok.immagine_1?.alt ||
@@ -79,17 +81,18 @@ export default function Eventi({ blok }) {
 								}
 								fill
 								className="object-cover"
-								sizes="(min-width: 768px) 40vw, 80vw"
+								sizes="(min-width: 768px) 40vw, 50vw"
 							/>
-						</motion.div>
-						<motion.div
+						</m.div>
+						<m.div
 							initial={{ opacity: 0, y: 40 }}
 							whileInView={{ opacity: 1, y: 0 }}
 							viewport={{ once: true, amount: 0.2 }}
 							transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-							className="absolute left-0 bottom-0 w-[62%] h-[52%] rounded-sm overflow-hidden shadow-2xl shadow-black/60 border-4 border-depa-black"
+							className="relative aspect-[4/5] md:aspect-auto md:absolute md:left-0 md:bottom-0 md:w-[62%] md:h-[52%] rounded-sm overflow-hidden shadow-2xl shadow-black/60 md:border-4 md:border-depa-black"
 						>
 							<Image
+								quality={90}
 								src={imageSrc(blok.immagine_2, '/images/eventi/torta-cerimonia-2.jpeg')}
 								alt={
 									blok.immagine_2?.alt ||
@@ -97,12 +100,12 @@ export default function Eventi({ blok }) {
 								}
 								fill
 								className="object-cover"
-								sizes="(min-width: 768px) 30vw, 70vw"
+								sizes="(min-width: 768px) 30vw, 50vw"
 							/>
-						</motion.div>
+						</m.div>
 						<div
 							aria-hidden
-							className="absolute -right-10 -bottom-10 h-40 w-40 rounded-full border border-depa-senape/30"
+							className="hidden md:block absolute -right-10 -bottom-10 h-40 w-40 rounded-full border border-depa-senape/30"
 						/>
 					</div>
 				</div>

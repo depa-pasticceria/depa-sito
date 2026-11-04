@@ -48,7 +48,7 @@ const components = [
 	{
 		name: 'prodotto',
 		display_name: 'Prodotto',
-		schema: { nome: text('Nome'), descrizione: textarea('Descrizione') },
+		schema: { nome: text('Nome'), descrizione: textarea('Descrizione'), immagine: asset('Foto') },
 	},
 	{
 		name: 'paragrafo',
@@ -75,6 +75,20 @@ const components = [
 		},
 	},
 	{
+		name: 'novita',
+		display_name: 'Novità (sfondo box panettone)',
+		schema: {
+			etichetta: text('Etichetta (es. Natale 2026)'),
+			titolo: text('Titolo'),
+			titolo_evidenza: text('Parte del titolo in giallo'),
+			sottotitolo: text('Sottotitolo in giallo'),
+			testo: textarea('Testo'),
+			bottone: text('Testo bottone WhatsApp'),
+			messaggio_whatsapp: textarea('Messaggio WhatsApp precompilato'),
+			immagine: asset('Foto'),
+		},
+	},
+	{
 		name: 'prodotti',
 		display_name: 'Sezione Prodotti',
 		schema: {
@@ -85,11 +99,34 @@ const components = [
 		},
 	},
 	{
+		name: 'vassoio',
+		display_name: 'Vassoio della domenica (animazione)',
+		schema: {
+			etichetta: text('Etichetta'),
+			titolo: textarea('Titolo (una riga per ogni a capo, l ultima in giallo)'),
+			testo: textarea('Testo sotto il vassoio'),
+			bottone: text('Testo bottone WhatsApp'),
+			messaggio_whatsapp: textarea('Messaggio WhatsApp precompilato'),
+		},
+	},
+	{
 		name: 'storia',
 		display_name: 'Sezione Storia',
 		schema: {
 			etichetta: text('Etichetta'),
 			paragrafi: bloks('Paragrafi', ['paragrafo']),
+			immagine: asset('Foto'),
+			didascalia: text('Didascalia foto (facoltativa)'),
+		},
+	},
+	{
+		name: 'galleria',
+		display_name: 'Galleria foto',
+		schema: {
+			titolo: text('Titolo'),
+			titolo_evidenza: text('Parte del titolo in giallo'),
+			intro: textarea('Introduzione'),
+			immagini: { type: 'multiasset', display_name: 'Foto', filetypes: ['images'] },
 		},
 	},
 	{
@@ -122,7 +159,7 @@ const components = [
 		is_root: true,
 		is_nestable: false,
 		schema: {
-			body: bloks('Sezioni', ['hero', 'prodotti', 'storia', 'eventi', 'prenota']),
+			body: bloks('Sezioni', ['hero', 'novita', 'prodotti', 'vassoio', 'storia', 'galleria', 'eventi', 'prenota']),
 		},
 	},
 	{

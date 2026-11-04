@@ -4,6 +4,9 @@ import Prodotti from '@/components/Prodotti';
 import Storia from '@/components/Storia';
 import Eventi from '@/components/Eventi';
 import Prenota from '@/components/Prenota';
+import Galleria from '@/components/Galleria';
+import Novita from '@/components/Novita';
+import Vassoio from '@/components/Vassoio';
 import { apiPlugin, storyblokInit } from '@storyblok/react/rsc';
 
 export const getStoryblokApi = storyblokInit({
@@ -16,6 +19,9 @@ export const getStoryblokApi = storyblokInit({
 		storia: Storia,
 		eventi: Eventi,
 		prenota: Prenota,
+		galleria: Galleria,
+		novita: Novita,
+		vassoio: Vassoio,
 	},
 	apiOptions: {
 		/** Set the correct region for your space. Learn more: https://www.storyblok.com/docs/packages/storyblok-js#example-region-parameter */

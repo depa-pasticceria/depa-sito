@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 
 function useInViewOnce() {
@@ -30,13 +30,13 @@ export function Reveal({ children, delay = 0, className }) {
 	const { ref, inView } = useInViewOnce();
 	return (
 		<div ref={ref} className={`overflow-hidden ${className ?? ''}`}>
-			<motion.div
+			<m.div
 				initial={{ y: '110%' }}
 				animate={{ y: inView ? '0%' : '110%' }}
 				transition={{ duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] }}
 			>
 				{children}
-			</motion.div>
+			</m.div>
 		</div>
 	);
 }
@@ -44,7 +44,7 @@ export function Reveal({ children, delay = 0, className }) {
 export function FadeIn({ children, delay = 0, className }) {
 	const { ref, inView } = useInViewOnce();
 	return (
-		<motion.div
+		<m.div
 			ref={ref}
 			initial={{ opacity: 0, y: 24 }}
 			animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
@@ -52,6 +52,6 @@ export function FadeIn({ children, delay = 0, className }) {
 			className={className}
 		>
 			{children}
-		</motion.div>
+		</m.div>
 	);
 }
