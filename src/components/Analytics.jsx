@@ -1,6 +1,6 @@
 'use client';
 
-import { useSyncExternalStore } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 import { CHIAVE_CONSENSO, GA_ID } from '@/lib/analytics';
@@ -31,11 +31,34 @@ function salva(valore) {
 }
 
 // Google Analytics 4 con Consent Mode v2: finché il visitatore non accetta, nessun cookie viene
-// salvato. Il caricamento è "lazyOnload" (a pagina finita), così non pesa su LCP e interattività.
-// Non parte in sviluppo, né nell'anteprima dell'editor di Storyblok.
+// salvato. Lo script di Google (177 KB) si carica solo quando la pagina è già in uso: al primo
+// scorrimento oppure dopo 5 secondi. Misurato: caricarlo subito rallentava il primo tocco di circa
+// 1 secondo su telefoni lenti. Non parte in sviluppo, né nell'anteprima dell'editor di Storyblok.
 export default function Analytics() {
 	const percorso = usePathname();
 	const scelta = useSyncExternalStore(iscrivi, leggi, lato_server);
+	const [pronto, setPronto] = useState(false);
+
+	useEffect(() => {
+		let fatto = false;
+		const avvia = () => {
+			if (fatto) return;
+			fatto = true;
+			window.removeEventListener('scroll', alloScroll);
+			clearTimeout(timer);
+			// anche dopo lo scorrimento si aspetta un momento di pausa del browser
+			if ('requestIdleCallback' in window) window.requestIdleCallback(() => setPronto(true), { timeout: 2000 });
+			else setTimeout(() => setPronto(true), 1000);
+		};
+		const alloScroll = () => avvia();
+		window.addEventListener('scroll', alloScroll, { passive: true, once: true });
+		const timer = setTimeout(avvia, 5000);
+		return () => {
+			fatto = true;
+			window.removeEventListener('scroll', alloScroll);
+			clearTimeout(timer);
+		};
+	}, []);
 
 	const attivo = process.env.NODE_ENV === 'production' && !percorso.startsWith('/preview');
 	if (!attivo) return null;
@@ -49,7 +72,9 @@ export default function Analytics() {
 
 	return (
 		<>
-			<Script id="ga4-init" strategy="lazyOnload">
+			{pronto && (
+				<>
+			<Script id="ga4-init" strategy="afterInteractive">
 				{`
 					window.dataLayer = window.dataLayer || [];
 					function gtag(){dataLayer.push(arguments);}
@@ -70,7 +95,9 @@ export default function Analytics() {
 					gtag('config', '${GA_ID}', { allow_google_signals: false, allow_ad_personalization_signals: false });
 				`}
 			</Script>
-			<Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="lazyOnload" />
+			<Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
+				</>
+			)}
 
 			{scelta === 'nessuna' && (
 				<div
