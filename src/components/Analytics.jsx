@@ -107,7 +107,7 @@ export default function Analytics() {
 					className="fixed inset-x-3 bottom-3 z-[55] mx-auto max-w-xl rounded-sm border border-depa-panna/15 bg-depa-graphite p-5 shadow-2xl shadow-black/60 md:inset-x-auto md:right-6 md:bottom-6 md:mx-0"
 				>
 					<p className="text-sm font-light leading-relaxed text-depa-panna/80">
-						Usiamo Google Analytics per capire come viene visitato il sito. Parte solo se acconsenti.
+						Questo sito utilizza cookie analitici per raccogliere statistiche anonime sulle visite. Vengono attivati solo con il tuo consenso.
 					</p>
 					<div className="mt-4 flex flex-wrap gap-3">
 						<button
